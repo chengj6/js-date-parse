@@ -5,8 +5,9 @@
 		"noImplicitReturns": false,
 		"target": "esnext",
 		"sourceMap": true,
+		"outDir": "bin"
 	},
-	"exclude": [
-		"node_modules"
+	"include": [
+		"src"
 	]
 }

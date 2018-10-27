@@ -2,3 +2,4 @@ src/*.js
 src/*.js.map
 .vscode
 node_modules
+bin

@@ -1,18 +1,4 @@
-const parser = require("../js-date-parse.js");
-
-function parsedDateEqual(test)
-{
-	const actual = parser.parse(test.format, test.value);
-	const expected = test.expected;
-	
-	return actual.getFullYear() === expected.getFullYear() &&
-		actual.getMonth() === expected.getMonth() &&
-		actual.getDate() === expected.getDate() &&
-		actual.getHours() === expected.getHours() &&
-		actual.getMinutes() === expected.getMinutes() &&
-		actual.getSeconds() === expected.getSeconds() &&
-		actual.getMilliseconds() === expected.getMilliseconds();
-}
+const parser = require("../bin/js-date-parse.js");
 
 QUnit.test("invariant", (assert) =>
 {
