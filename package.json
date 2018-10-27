@@ -4,7 +4,8 @@
   "description": "A lightweight library meant to parse strings from any arbitrary format into Date objects",
   "main": "main.js",
   "scripts": {
-    "test": "node ./node_modules/qunit/bin/qunit \"test/**/*.js\""
+    "test": "node ./node_modules/qunit/bin/qunit \"test/**/*.js\"",
+    "build": "node ./node_modules/typescript/bin/tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,8 @@
   },
   "homepage": "https://github.com/fernap3/js-date-parse#readme",
   "devDependencies": {
-    "qunit": "^2.7.1"
+    "qunit": "^2.7.1",
+    "typescript": "^3.1.3"
   },
   "dependencies": {}
 }
