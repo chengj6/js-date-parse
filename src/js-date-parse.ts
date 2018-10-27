@@ -31,6 +31,14 @@ let shortMonthNames = [
 let amPmNames = { am: "am", pm: "pm"};
 let shortAmPmNames = { am: "a", pm: "p"};
 
+let ambiguousYearResolver = (year: string) => {
+	const parsed = parseInt(year, 10);
+	if (parsed > 60)
+		return parsed + 1900;
+	else
+		return parsed + 2000;
+};
+
 type DateComponentType = "year" | "month" | "day" | "hour" | "minute" | "second" | "millisecond" | "ampm" | "literal";
 
 interface Parser
@@ -172,11 +180,31 @@ class IntegerSpecifierParser extends SpecifierParser
 	}
 }
 
-class YearSpecifierParser extends IntegerSpecifierParser
+class YearSpecifierParser extends SpecifierParser
 {
 	constructor(format: string, pos: number)
 	{
-		super(format, pos, "year", 4);
+		const specifierChars = eatSameChar(format, pos);
+
+		let parser: (v: string) => number;
+
+		if (specifierChars.length === 2)
+		{
+			parser = v => ambiguousYearResolver(v);
+		}
+		else
+		{
+			parser = v => parseInt(v, 10);
+		}
+		
+		super(
+			specifierChars,
+			`\\d{1,4}`,
+			{
+				type: "year",
+				parse: parser,
+			}
+		);
 	}
 }
 
