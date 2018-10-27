@@ -40,7 +40,7 @@ interface Parser
 	parse: (v: string) => number;
 }
 
-export function parse(value: string, format: string): Date
+export function parse(format: string, value: string): Date
 {
 	let pattern = "";
 	const parsers = [] as Parser[];

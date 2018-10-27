@@ -1,0 +1,23 @@
+{
+  "name": "js-data-parse",
+  "version": "1.0.0",
+  "description": "A lightweight library meant to parse strings from any arbitrary format into Date objects",
+  "main": "main.js",
+  "scripts": {
+    "test": "node ./node_modules/qunit/bin/qunit \"test/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernap3/js-date-parse.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fernap3/js-date-parse/issues"
+  },
+  "homepage": "https://github.com/fernap3/js-date-parse#readme",
+  "devDependencies": {
+    "qunit": "^2.7.1"
+  },
+  "dependencies": {}
+}
