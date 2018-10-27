@@ -1,5 +1,4 @@
-
-const DEBUG = true;
+const parserCache = {} as { [pattern: string]: { regexp: RegExp, parsers: Parser[] } };
 let monthNames = [
 	"january",
 	"february",
@@ -40,14 +39,12 @@ interface Parser
 	parse: (v: string) => number;
 }
 
-export function parse(format: string, value: string): Date
+function generateParser(format: string): { regexp: RegExp, parsers: Parser[] }
 {
 	let pattern = "";
-	const parsers = [] as Parser[];
-
-	value = value.toLowerCase();
-
 	let i = 0;
+	let parsers = [] as Parser[];
+
 	while (i < format.length)
 	{
 		const spec = eatSpecifier(format, i);
@@ -67,10 +64,24 @@ export function parse(format: string, value: string): Date
 		}
 	}
 
-	if (DEBUG)
-		console.log(`Generated pattern for matching: ${pattern}`);
+	return { regexp: new RegExp(`^${pattern}$`), parsers };
+}
 
-	const match = new RegExp(`^${pattern}$`).exec(value);
+export function parse(format: string, value: string): Date
+{
+	let parsers = [] as Parser[];
+	let regexp: RegExp;
+
+	if (!parserCache.hasOwnProperty(format))
+		parserCache[format] = generateParser(format);
+
+	regexp = parserCache[format].regexp;
+	parsers = parserCache[format].parsers;
+	
+
+	value = value.toLowerCase();
+
+	const match = regexp.exec(value);
 
 	if (!match)
 		return null;
