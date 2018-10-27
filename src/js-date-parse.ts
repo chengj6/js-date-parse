@@ -27,6 +27,24 @@ let shortMonthNames = [
 	"nov",
 	"dec",
 ];
+let dayNames = [
+	"sunday",
+	"monday",
+	"tuesday",
+	"wednesday",
+	"thursday",
+	"friday",
+	"saturday",
+];
+let shortDayNames = [
+	"su",
+	"mo",
+	"tu",
+	"we",
+	"th",
+	"fr",
+	"sa",
+];
 
 let amPmNames = { am: "am", pm: "pm"};
 let shortAmPmNames = { am: "a", pm: "p"};
@@ -39,7 +57,7 @@ let ambiguousYearResolver = (year: string) => {
 		return parsed + 2000;
 };
 
-type DateComponentType = "year" | "month" | "day" | "hour" | "minute" | "second" | "millisecond" | "ampm" | "literal";
+type DateComponentType = "year" | "month" | "day" | "hour" | "minute" | "second" | "millisecond" | "ampm" | "literal" | "dayname";
 
 interface Parser
 {
@@ -225,11 +243,19 @@ class MonthSpecifierParser extends SpecifierParser
 	}
 }
 
-class DaySpecifierParser extends IntegerSpecifierParser
+class DaySpecifierParser extends SpecifierParser
 {
 	constructor(format: string, pos: number)
 	{
-		super(format, pos, "day", 2);
+		const chars = eatSameChar(format, pos);
+		super(
+			chars,
+			chars.length <= 2 ? `\\d{1,2}` : chars.length === 3 ? shortDayNames.join("|") : dayNames.join("|"),
+			{
+				type: chars.length > 2 ? "dayname" : "day",
+				parse: chars.length > 2 ? v => null : v => parseInt(v, 10)
+			}
+		);
 	}
 }
 
@@ -329,6 +355,8 @@ function dateFromMatch(match: RegExpExecArray, parsers: Parser[]): Date
 			case "month":
 				date.setMonth(parsed);
 				break;
+			case "dayname": // Named days are ignored since they don't correspond to actual date values
+				break;
 			case "day":
 				date.setDate(parsed);
 				break;
@@ -368,3 +396,5 @@ function regexEscape(pattern: string): string
 {
 	return pattern.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
+
+parse("ddd, MMM d, yyyy", "Mo, Jul 12, 2014")

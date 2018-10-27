@@ -1,5 +1,5 @@
 {
-  "name": "js-data-parse",
+  "name": "js-date-parse",
   "version": "1.0.0",
   "description": "A lightweight library meant to parse strings from any arbitrary format into Date objects",
   "main": "main.js",
